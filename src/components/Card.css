@@ -1,0 +1,30 @@
+.stat-card {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 16px 28px;
+    gap: 6px;
+    flex: 1;
+    border-right: 1px solid #dde1e7;
+}
+
+.stat-card:last-child {
+    border-right: none;
+}
+
+.stat-label {
+    font-size: 13px;
+    font-weight: 400;
+    color: #555;
+}
+
+.stat-value {
+    font-size: 22px;
+    font-weight: 700;
+    color: #1a2845;
+}
+
+.stat-value.muted {
+    color: #aab0ba;
+}

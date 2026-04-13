@@ -66,9 +66,15 @@ export default function TicketsListView() {
             const response = await fetch(`${API_URL}/tickets/sync`, {
                 headers: { 'Authorization': `Bearer ${token}` }
             });
+            const data = await response.json();
+
             if (response.ok) {
                 // Refresh the ticket list after sync
                 await fetchTickets();
+            } else {
+                console.error("Sync Failure Details:", data.details);
+                // Optionally show a non-intrusive toast instead of alert
+                // alert(`Sync Failed: ${data.details || 'Unknown error'}`);
             }
         } catch (err) {
             console.error("Sync Error:", err);
@@ -137,11 +143,14 @@ export default function TicketsListView() {
 
     useEffect(() => {
         const init = async () => {
-            // Check if we are logged in first
             const token = localStorage.getItem('token');
             if (token) {
-                await syncTicketsFromEmail(); // Initial sync on load
+                // 1. Fetch existing tickets immediately so user sees data
+                await fetchTickets();
+                // 2. Fetch agents
                 await fetchAgents();
+                // 3. Trigger sync in background
+                syncTicketsFromEmail();
             } else {
                 setLoading(false);
             }

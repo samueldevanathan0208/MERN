@@ -117,12 +117,37 @@ export default function TicketsListView() {
         }
     };
 
+    const fetchAgents = async () => {
+        try {
+            const token = localStorage.getItem('token');
+            const response = await fetch(`${API_URL}/auth/agents`, {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            });
+            if (response.ok) {
+                const data = await response.json();
+                setFetchedAgents(data);
+            }
+        } catch (err) {
+            console.error("Error fetching agents:", err);
+        }
+    };
+
+
     useEffect(() => {
         const init = async () => {
-            await syncTicketsFromEmail(); // Initial sync on load
-            await fetchAgents();
+            // Check if we are logged in first
+            const token = localStorage.getItem('token');
+            if (token) {
+                await syncTicketsFromEmail(); // Initial sync on load
+                await fetchAgents();
+            } else {
+                setLoading(false);
+            }
         };
         init();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const filtered = useMemo(() => {

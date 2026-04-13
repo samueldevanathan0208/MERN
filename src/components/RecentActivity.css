@@ -1,0 +1,119 @@
+.activity-card {
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 24px;
+  border: 1px solid #f1f5f9;
+  flex: 2;
+}
+
+.activity-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 24px;
+}
+
+.activity-header h3 {
+  font-size: 18px;
+  font-weight: 700;
+  color: #1e293b;
+  margin: 0;
+}
+
+.activity-header p {
+  font-size: 14px;
+  color: #64748b;
+  margin: 4px 0 0 0;
+}
+
+.view-all-btn {
+  background: transparent;
+  border: none;
+  color: #3b82f6;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.activity-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.activity-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 0;
+  border-top: 1px solid #f1f5f9;
+}
+
+.activity-user {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.avatar-initials-small {
+  width: 40px;
+  height: 40px;
+  background-color: #e0e7ff;
+  color: #4f46e5;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 14px;
+  flex-shrink: 0;
+}
+
+.activity-info p {
+  font-size: 14px;
+  color: #1e293b;
+  margin: 0;
+}
+
+.user-name-bold {
+  font-weight: 600;
+  margin-right: 4px;
+}
+
+.ticket-id {
+  color: #3b82f6;
+  font-weight: 500;
+  margin-left: 4px;
+}
+
+.activity-time {
+  font-size: 12px;
+  color: #94a3b8;
+}
+
+.activity-status-badge {
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 500;
+  text-transform: lowercase;
+}
+
+.activity-status-badge.success {
+  background: #f0fdf4;
+  color: #166534;
+}
+
+.activity-status-badge.info {
+  background: #f1f5f9;
+  color: #475569;
+}
+
+.activity-status-badge.destructive {
+  background: #fef2f2;
+  color: #991b1b;
+}
+
+.activity-status-badge.neutral {
+  background: #f8fafc;
+  color: #64748b;
+}

@@ -1,0 +1,114 @@
+.reports-container-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+}
+
+.report-cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 20px;
+}
+
+.report-card-premium {
+    background: #fff;
+    border: 1px solid #ebedef;
+    border-radius: 12px;
+    padding: 24px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.report-card-premium:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.card-header-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.card-icon-styled {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    height: 48px;
+    background: #f0f7ff;
+    color: #2563eb;
+    border-radius: 10px;
+}
+
+.card-icon-styled svg {
+    width: 24px;
+    height: 24px;
+}
+
+.card-trend-badge {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding: 4px 8px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 700;
+}
+
+.card-trend-badge.up {
+    background: #f6ffed;
+    color: #389e0d;
+}
+
+.card-trend-badge.down {
+    background: #fff1f0;
+    color: #cf1322;
+}
+
+.card-info-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.card-label-text {
+    font-size: 13px;
+    font-weight: 500;
+    color: #9fa2b4;
+}
+
+.card-value-hero {
+    font-size: 28px;
+    font-weight: 700;
+    color: #1a2845;
+    letter-spacing: -0.02em;
+}
+
+/* ── Specific grid section overrides ── */
+.reports-grid-section {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+    gap: 24px;
+}
+
+.report-widget {
+    background: #fff;
+    border: 1px solid #ebedef;
+    border-radius: 12px;
+    padding: 24px;
+}
+
+.agent-mini-avatar-initials {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 12px;
+    border: 2px solid #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}

@@ -57,66 +57,72 @@ export default function TicketsListView() {
     const [pendingAgents, setPendingAgents] = useState({});
     const [fetchedAgents, setFetchedAgents] = useState([]);
 
+    const [syncing, setSyncing] = useState(false);
+
+    const syncTicketsFromEmail = async () => {
+        setSyncing(true);
+        try {
+            const token = localStorage.getItem('token');
+            const response = await fetch(`${API_URL}/tickets/sync`, {
+                headers: { 'Authorization': `Bearer ${token}` }
+            });
+            if (response.ok) {
+                // Refresh the ticket list after sync
+                await fetchTickets();
+            }
+        } catch (err) {
+            console.error("Sync Error:", err);
+        } finally {
+            setSyncing(false);
+        }
+    };
+
+    const fetchTickets = async () => {
+        try {
+            const token = localStorage.getItem('token');
+            const response = await fetch(`${API_URL}/tickets`, {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            });
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            const data = await response.json();
+
+            // Map backend data to frontend format
+            const mappedTickets = data.map(t => {
+                return {
+                    id: t._id,
+                    subject: t.subject || 'No Subject',
+                    status: t.status || 'Open',
+                    priority: t.priority || 'Low',
+                    agent: t.assignedTo || null,
+                    requester: t.customerEmail?.split('@')[0] || 'Unknown',
+                    company: 'Customer',
+                    responseTime: 'Just now',
+                    resolutionInfo: t.status === 'Open' ? 'Resolution due soon' : 'Resolved',
+                    overdue: false,
+                    date: new Date(t.createdAt).toLocaleDateString(),
+                };
+            });
+
+            setTickets(mappedTickets);
+            setError(null);
+        } catch (err) {
+            console.error("Error fetching tickets:", err);
+            setError(err.message);
+        } finally {
+            setLoading(false);
+        }
+    };
+
     useEffect(() => {
-        const fetchTickets = async () => {
-            try {
-                const token = localStorage.getItem('token');
-                const response = await fetch(`${API_URL}/tickets`, {
-                    headers: {
-                        'Authorization': `Bearer ${token}`
-                    }
-                });
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-                const data = await response.json();
-
-                // Map backend data to frontend format
-                const mappedTickets = data.map(t => {
-                    return {
-                        id: t._id,
-                        subject: t.subject || 'No Subject',
-                        status: t.status || 'Open',
-                        priority: t.priority || 'Low',
-                        agent: t.assignedTo || null,
-                        requester: t.customerEmail?.split('@')[0] || 'Unknown',
-                        company: 'Customer',
-                        responseTime: 'Just now',
-                        resolutionInfo: t.status === 'Open' ? 'Resolution due soon' : 'Resolved',
-                        overdue: false,
-                        date: new Date(t.createdAt).toLocaleDateString(),
-                    };
-                });
-
-                setTickets(mappedTickets);
-                setError(null);
-            } catch (err) {
-                console.error("Error fetching tickets:", err);
-                setError(err.message);
-            } finally {
-                setLoading(false);
-            }
+        const init = async () => {
+            await syncTicketsFromEmail(); // Initial sync on load
+            await fetchAgents();
         };
-
-        const fetchAgents = async () => {
-            try {
-                const token = localStorage.getItem('token');
-                const response = await fetch(`${API_URL}/auth/agents`, {
-                    headers: {
-                        'Authorization': `Bearer ${token}`
-                    }
-                });
-                if (response.ok) {
-                    const data = await response.json();
-                    setFetchedAgents(data);
-                }
-            } catch (err) {
-                console.error("Error fetching agents:", err);
-            }
-        };
-
-        fetchTickets();
-        fetchAgents();
+        init();
     }, []);
 
     const filtered = useMemo(() => {
@@ -173,6 +179,14 @@ export default function TicketsListView() {
         <div className="tc-page">
             <div className="tc-topbar">
                 <h1 className="tc-title">All Tickets</h1>
+                <button
+                    className={`tc-reset-btn ${syncing ? 'syncing' : ''}`}
+                    onClick={syncTicketsFromEmail}
+                    disabled={syncing}
+                    style={{ marginLeft: 'auto', padding: '6px 12px' }}
+                >
+                    <Clock size={14} /> {syncing ? 'Syncing...' : 'Sync Emails'}
+                </button>
             </div>
 
             <div className="tc-filterbar">
